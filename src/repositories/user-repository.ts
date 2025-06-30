@@ -1,13 +1,8 @@
 import { Effect } from "effect";
-import { SqlClient } from "@effect/sql";
 import * as SqliteDrizzle from "@effect/sql-drizzle/Sqlite";
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { users } from "../db/schema.js";
 import {
-  User,
-  CreateUserRequest,
-  UpdateUserRequest,
-  UserListQuery,
   UserListQueryFrom,
   CreateUserRequestFrom,
   UpdateUserRequestFrom,
@@ -17,7 +12,6 @@ export class UserRepository extends Effect.Service<UserRepository>()(
   "UserRepository",
   {
     effect: Effect.gen(function* () {
-      const sqlClient = yield* SqlClient.SqlClient;
       const db = yield* SqliteDrizzle.SqliteDrizzle;
 
       const findAll = ({ limit = 10, offset = 0 }: UserListQueryFrom) =>

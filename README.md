@@ -1,35 +1,42 @@
-# Effect-TS Web Server Template with Drizzle ORM
+# Effest - Effect-TS HTTP API Server
 
-A modern web server template built with Effect-TS, featuring:
+A modern HTTP API server built with Effect-TS, featuring:
 
 - **Bun** as the runtime
+- **Effect HTTP API** for type-safe REST endpoints
 - **Effect Schema** for validation
-- **Effect RPC** for type-safe endpoints
 - **Drizzle ORM** with Effect SQL integration
 - **SQLite** as the database
+- **Swagger/OpenAPI** documentation
 
 ## Project Structure
 
 ```
 src/
+├── api/
+│   ├── user-api.ts          # HTTP API endpoint definitions
+│   └── user-handlers.ts     # API handlers implementation
 ├── db/
-│   ├── schema.ts        # Drizzle schema definitions
-│   └── database.ts      # Database layer setup
-├── schemas/             # Effect Schema definitions for validation
-│   └── user.ts
-├── rpc/                # RPC endpoint definitions
-│   └── user-rpc.ts
-├── repositories/       # Database repositories using Drizzle + Effect SQL
+│   ├── schema.ts           # Drizzle schema definitions
+│   └── database.ts         # Database layer setup
+├── repositories/           # Database repositories using Drizzle + Effect SQL
 │   └── user-repository.ts
-├── handlers/           # RPC handlers connecting endpoints to repositories
-│   └── user-handlers.ts
-├── main.ts            # Main server entry point
-├── client.ts          # Example client usage
-└── init-db.ts         # Database initialization script
-drizzle.config.ts      # Drizzle configuration
+├── schemas/               # Effect Schema definitions for validation
+│   └── user.ts
+├── migrations/           # Database migrations
+│   └── 0001_create_users.ts
+├── api-server.ts        # HTTP API server entry point
+└── main.ts             # RPC server entry point (legacy)
 ```
 
 ## Features
+
+### HTTP API with Swagger
+
+- RESTful API endpoints with full type safety
+- Automatic OpenAPI/Swagger documentation at `/docs`
+- Type-safe request/response validation
+- Built-in error handling with proper HTTP status codes
 
 ### Drizzle ORM Integration
 
@@ -43,12 +50,6 @@ drizzle.config.ts      # Drizzle configuration
 - Type-safe request/response validation using Effect Schema
 - Email validation with regex patterns
 - Optional fields with proper typing
-
-### RPC Endpoints
-
-- Type-safe remote procedure calls
-- Automatic serialization/deserialization
-- Error handling with typed errors
 
 ### Bun Integration
 
@@ -73,31 +74,78 @@ bun install
 2. Set up the database:
 
 ```bash
-# Initialize the database with tables
-bun run init-db
-
-# Or use Drizzle push to sync schema
+# Push schema changes to database
 bun run db:push
 ```
 
-3. Start the development server:
+3. Start the HTTP API server:
 
 ```bash
-bun run dev
+bun run api
 ```
 
-The server will start on `http://localhost:3000` with RPC endpoints available at `/rpc`.
+The server will start on `http://localhost:3000` with:
+
+- REST API endpoints available at `/users`
+- Swagger documentation at `http://localhost:3000/docs`
 
 ### Available Scripts
 
-- `bun run dev` - Start development server with hot reload
+- `bun run api` - Start HTTP API server with hot reload
+- `bun run dev` - Start RPC server (legacy)
 - `bun run build` - Build for production
 - `bun run start` - Start production server
-- `bun run init-db` - Initialize database with tables
 - `bun run db:generate` - Generate Drizzle migrations
 - `bun run db:migrate` - Run Drizzle migrations
 - `bun run db:push` - Push schema changes to database
 - `bun run db:studio` - Open Drizzle Studio (database GUI)
+
+## API Endpoints
+
+The HTTP API provides RESTful endpoints for user management:
+
+### GET /users
+
+Get a list of users with optional pagination.
+
+Query parameters:
+
+- `limit` (optional): Number of users to return
+- `offset` (optional): Number of users to skip
+
+### GET /users/:id
+
+Get a user by ID.
+
+### POST /users
+
+Create a new user.
+
+Request body:
+
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+```
+
+### PATCH /users/:id
+
+Update an existing user.
+
+Request body:
+
+```json
+{
+  "name": "Jane Doe",
+  "email": "jane@example.com"
+}
+```
+
+### DELETE /users/:id
+
+Delete a user by ID.
 
 ## Database Operations
 
@@ -117,49 +165,43 @@ This opens a web-based database GUI for inspecting and editing data.
 
 Or for development, push directly: `bun run db:push`
 
-## API Endpoints
+## API Documentation
 
-All endpoints are available via RPC at `/rpc`:
-
-### UserList
-
-Get a list of users with pagination.
-
-### UserById
-
-Get a user by ID.
-
-### UserCreate
-
-Create a new user.
-
-### UserUpdate
-
-Update an existing user.
-
-### UserDelete
-
-Delete a user.
+Visit `http://localhost:3000/docs` when the server is running to access the interactive Swagger documentation.
 
 ## Example Usage
 
-### Using the Client
-
-Run the example client to see the RPC calls in action:
+### Using curl
 
 ```bash
-bun src/client.ts
-```
+# Get all users
+curl http://localhost:3000/users
 
-### Manual Testing with curl
+# Get user by ID
+curl http://localhost:3000/users/1
 
-```bash
-curl -X POST http://localhost:3000/rpc \
+# Create a new user
+curl -X POST http://localhost:3000/users \
   -H "Content-Type: application/json" \
-  -d '{"_tag": "Request", "id": "123", "tag": "UserList", "payload": {"limit": 10}, "traceId": "trace", "spanId": "span", "sampled": true, "headers": {}}'
+  -d '{"name": "John Doe", "email": "john@example.com"}'
+
+# Update a user
+curl -X PATCH http://localhost:3000/users/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Jane Doe"}'
+
+# Delete a user
+curl -X DELETE http://localhost:3000/users/1
 ```
 
 ## Architecture
+
+### HTTP API + Effect Platform
+
+- Type-safe HTTP endpoints with automatic validation
+- Built-in Swagger/OpenAPI documentation generation
+- Composable middleware and error handling
+- Request/response schema validation
 
 ### Drizzle ORM + Effect SQL
 
@@ -176,13 +218,6 @@ curl -X POST http://localhost:3000/rpc \
 - Automatic serialization
 - Custom validation rules
 
-### Effect RPC
-
-- Type-safe client/server communication
-- Automatic request/response handling
-- Built-in error propagation
-- Middleware support
-
 ### Repository Pattern
 
 - Clean separation of concerns
@@ -197,6 +232,7 @@ The template follows functional programming principles with Effect-TS:
 - **Layers**: Composable application architecture
 - **Effects**: Structured concurrency and error handling
 - **Schemas**: Type-safe data validation and transformation
+- **HTTP API**: RESTful endpoints with automatic documentation
 
 ## Extending the Template
 

@@ -1,6 +1,5 @@
-import { SqlClient } from "@effect/sql";
 import * as SqliteDrizzle from "@effect/sql-drizzle/Sqlite";
-import { SqliteClient } from "@effect/sql-sqlite-node";
+import { SqliteClient } from "@effect/sql-sqlite-bun";
 import { Layer } from "effect";
 
 export const SqlLive = SqliteClient.layer({

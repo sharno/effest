@@ -6,12 +6,10 @@
       "dependencies": {
         "@effect/platform": "^0.87.1",
         "@effect/platform-bun": "^0.72.3",
-        "@effect/rpc": "^0.64.2",
         "@effect/schema": "^0.75.5",
         "@effect/sql": "^0.40.1",
         "@effect/sql-drizzle": "^0.39.1",
         "@effect/sql-sqlite-bun": "^0.41.1",
-        "@effect/sql-sqlite-node": "^0.41.1",
         "drizzle-kit": "^0.31.4",
         "drizzle-orm": "^0.44.2",
         "effect": "^3.16.10",
@@ -44,8 +42,6 @@
     "@effect/sql-drizzle": ["@effect/sql-drizzle@0.39.1", "", { "peerDependencies": { "@effect/sql": "^0.40.1", "drizzle-orm": ">=0.43.1 <0.50", "effect": "^3.16.10" } }, "sha512-rWI97rByJn5MkvM1bM93yVP1Oorpbz+uAUz/CazZLo9OlrhyfPv258HF8inEThQBX3Ir1AE7vgU0HU0e9V+hpQ=="],
 
     "@effect/sql-sqlite-bun": ["@effect/sql-sqlite-bun@0.41.1", "", { "dependencies": { "@opentelemetry/semantic-conventions": "^1.33.0" }, "peerDependencies": { "@effect/experimental": "^0.51.1", "@effect/platform": "^0.87.1", "@effect/sql": "^0.40.1", "effect": "^3.16.10" } }, "sha512-NRmWfY33a5apLuT23Q4oJklc3zfUPbqbzbIbs6ZzZ+OC+r8VLI7TAzzfx9cN4p79WoXajJTkInQBsUXxd42h7w=="],
-
-    "@effect/sql-sqlite-node": ["@effect/sql-sqlite-node@0.41.1", "", { "dependencies": { "@opentelemetry/semantic-conventions": "^1.33.0", "better-sqlite3": "^11.10.0" }, "peerDependencies": { "@effect/experimental": "^0.51.1", "@effect/platform": "^0.87.1", "@effect/sql": "^0.40.1", "effect": "^3.16.10" } }, "sha512-jnDYcnAM9oyt9nt2W4W7G1/XsYGXXH/ZN8ugVE2IVH2GvCKBChozLRonBGs/wlLTxkAlivTIL4KIMrfAY7HAxQ=="],
 
     "@effect/workflow": ["@effect/workflow@0.4.2", "", { "peerDependencies": { "@effect/platform": "^0.87.1", "@effect/rpc": "^0.64.2", "effect": "^3.16.10" } }, "sha512-R9I35wMD9V9QJji/BFqJ14aCc/bljizLGpHWKE/K7S8x9ihbsOuw7VMSk8WShoX07ojdtBea21EfL7VD1YghsQ=="],
 

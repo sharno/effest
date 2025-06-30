@@ -25,8 +25,7 @@ src/
 │   └── user.ts
 ├── migrations/           # Database migrations
 │   └── 0001_create_users.ts
-├── api-server.ts        # HTTP API server entry point
-└── main.ts             # RPC server entry point (legacy)
+└── api-server.ts        # HTTP API server entry point
 ```
 
 ## Features
@@ -92,7 +91,6 @@ The server will start on `http://localhost:3000` with:
 ### Available Scripts
 
 - `bun run api` - Start HTTP API server with hot reload
-- `bun run dev` - Start RPC server (legacy)
 - `bun run build` - Build for production
 - `bun run start` - Start production server
 - `bun run db:generate` - Generate Drizzle migrations
@@ -240,10 +238,10 @@ The template follows functional programming principles with Effect-TS:
 
    - Add to `src/db/schema.ts`
    - Create Effect schemas in `src/schemas/`
-   - Create RPC definitions
+   - Create API endpoints in `src/api/`
    - Create repository and handlers
 
-2. **Add middleware**: Use RPC middleware for authentication, logging, etc.
+2. **Add middleware**: Use HTTP middleware for authentication, logging, etc.
 
 3. **Add validation**: Extend schemas with custom validation rules
 
